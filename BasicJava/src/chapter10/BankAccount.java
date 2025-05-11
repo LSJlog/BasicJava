@@ -1,0 +1,48 @@
+package chapter10;
+
+public abstract class BankAccount {
+	// 필드
+	protected int balance; // 잔액
+
+	// 생성자
+	public BankAccount(int balance) {
+		this.balance = balance;
+	}
+
+	// 메소드
+
+	public abstract String getAccountType(); // 계좌 종류 반환하는 추상 메소드
+
+	public int getBalance() { // 현재 계좌의 잔액
+		return balance;
+	}
+
+	public int deposit(int amount) { // 입금
+		balance += amount;
+		return balance;
+	}
+
+	public boolean withdraw(int amount) { // 출금
+		balance -= amount;
+		if (balance < 0) {
+			balance += amount;
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public boolean transfer(int amount, BankAccount otherAccount)  { // 송금
+		if (amount < 0 || amount > balance) {
+			throw new IllegalArgumentException();
+		}
+		if (otherAccount == null) {
+			throw new NullPointerException();
+		}
+		if (withdraw(amount)) {
+			otherAccount.deposit(amount);				
+			return true;
+		}
+		return false;
+	}
+}
